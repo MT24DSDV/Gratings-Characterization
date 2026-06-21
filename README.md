@@ -1,4 +1,4 @@
-# Fiber Bragg Grating Characterization Toolkit
+# Grating Characterization Python Toolkit
 
 This repository contains a set of Python scripts developed during my research internship in the summer of 2026, focused on the spectral characterization of fiber Bragg gratings (FBGs).
 
