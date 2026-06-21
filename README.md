@@ -4,6 +4,29 @@ This repository contains a set of Python scripts developed during my research in
 
 At the moment, the toolkit includes scripts for **reflection analysis**, **transmission analysis**, and a **Transfer Matrix Method (TMM)** simulation. Since the internship is still ongoing, more tools and features may be added later as the project progresses.
 
+### File Naming Convention
+
+In my workflow, all measurement files follow this naming pattern:
+
+```
+SAMPLENAME_DD-MM-YY.csv
+```
+
+For example:
+
+```
+Box2_10-06-26.csv
+Box1_10-06-26.csv
+```
+
+I chose to put the **date at the end of the file name** to keep the files organized chronologically while still being able to identify the sample from the beginning of the name. This also allows the scripts to automatically extract the date from the file name for labeling the output plots and CSV files.
+
+This convention is used in both `reflection_analysis.py` and `transmission_analysis.py`.
+
+If you do not use dates in your file names, or if you use a different naming convention, you can simply ignore the date extraction part of the scripts. The only variables you need to change are the file name variables (`FILE_NAME`, `FILE`, `FILE_1`, `FILE_2`, etc.), which should match your file names exactly without the `.csv` extension. The outputs will still be saved correctly using the full file name as a label.
+
+Note that in `reflection_analysis.py`, some modes such as `cross` and `box` also automatically extract the group name (e.g., `BOX1`, `BOX2`) from the **first segment** of the file name, before the first underscore. For example, a file named `BOX2_IN_OUT_10-06-26.csv` would be automatically tagged as belonging to `BOX2`. If your files do not follow this pattern, you can set the `BOX` variable manually in the cross mode settings.
+
 ## Input Files
 
 All analysis scripts (`reflection_analysis.py` and `transmission_analysis.py`) require `.csv` files **exported directly from the Optical Spectrum Analyzer (OSA)**. The parser is designed to read the standard OSA trace format containing the `[TRACE DATA]` section with multiple traces (A to G).

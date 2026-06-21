@@ -14,9 +14,9 @@ from pathlib import Path
 # "box"     - all traces of one file vs reference, organized in subfolders
 # "full"    - just plot the full spectrum of a file
 
-#MODE = "single"
+MODE = "single"
 #MODE = "compare"
-MODE = "cross"
+#MODE = "cross"
 #MODE = "box"
 #MODE = "full"
 
@@ -28,7 +28,7 @@ MODE = "cross"
 SCRIPT_DIR   = Path(__file__).resolve().parent
 
 # CHANGE THIS to your data folder name
-DATA_DIR     = SCRIPT_DIR / "data" / "reflection" / "RES_TEST"
+DATA_DIR     = SCRIPT_DIR / "data" / "reflection"
 
 # Results folder (auto-created)
 RESULTS_BASE = SCRIPT_DIR / "results" / "reflection"
@@ -39,7 +39,7 @@ RESULTS_BASE = SCRIPT_DIR / "results" / "reflection"
 # ==========================================
 
 # CHANGE THIS to the file you want to analyze
-FILE            = DATA_DIR / "YOUR_FILE_HERE.csv"
+FILE   = DATA_DIR / "Test_data_reflection_DATE.csv"
 
 # CHANGE THESE to the traces you want
 TRACE_SOURCE    = "A"
@@ -214,9 +214,9 @@ def print_summary(results, label, trace_src, trace_refl):
 def run_single():
     date_tag = FILE.stem.split("_")[-1]
     file_tag = FILE.stem.split("_")[0]
-    res_tag  = DATA_DIR.name
+    
 
-    OUTPUT_DIR = RESULTS_BASE / date_tag / res_tag
+    OUTPUT_DIR = RESULTS_BASE / date_tag 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     SAVE_CSV   = OUTPUT_DIR / f"reflection_analysis_{file_tag}_{date_tag}.csv"

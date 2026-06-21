@@ -9,8 +9,8 @@ from pathlib import Path
 # SETTINGS
 # ==========================================
 
-# CHANGE THIS to select the box you want to analyze
-BOX = "Box2"
+# CHANGE THIS to the file you want to analyze (without .csv)
+FILE_NAME = "Test_data_transmission_DATE"
 
 # CHANGE THESE to select the traces you want to compare
 TRACE_SOURCE      = "A"   # reference / input
@@ -33,31 +33,21 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ==========================================
-# AUTO-FIND FILE FOR SELECTED BOX
+# LOAD FILE
 # ==========================================
 
-matches = list(DATA_DIR.glob(f"{BOX}_*.csv"))
-if not matches:
-    raise FileNotFoundError(f"No CSV file found for {BOX} in {DATA_DIR}")
-if len(matches) > 1:
-    print(f"Multiple files found for {BOX}:")
-    for i, f in enumerate(matches):
-        print(f"  [{i}] {f.name}")
-    choice = int(input("Choose file number: "))
-    FILE = matches[choice]
-else:
-    FILE = matches[0]
+FILE = DATA_DIR / f"{FILE_NAME}.csv"
 
-# Auto-name output files
-parts    = FILE.stem.split("_")
-box_tag  = parts[0]
-date_tag = parts[-1]
+if not FILE.exists():
+    raise FileNotFoundError(f"File not found: {FILE}")
 
-SAVE_CSV  = OUTPUT_DIR / f"transmission_{box_tag}_{date_tag}.csv"
-SAVE_PLOT = OUTPUT_DIR / f"transmission_{box_tag}_{date_tag}.png"
+date_tag = FILE.stem.split("_")[-1]
+file_tag = FILE.stem
+
+SAVE_CSV  = OUTPUT_DIR / f"transmission_{file_tag}.csv"
+SAVE_PLOT = OUTPUT_DIR / f"transmission_{file_tag}.png"
 
 print(f"\n{'='*60}")
-print(f"  Box:         {BOX}")
 print(f"  File:        {FILE.name}")
 print(f"  Source:      Trace {TRACE_SOURCE}")
 print(f"  Transmitted: Trace {TRACE_TRANSMITTED}")
@@ -156,7 +146,6 @@ print(f"\nSaved: {SAVE_CSV}")
 # ==========================================
 fig, axes = plt.subplots(3, 1, figsize=(11, 12), sharex=True)
 
-# Panel 1: Full Spectrum
 colors = ['C0','C1','C2','C3','C4','C5','C6']
 for i, (name, df) in enumerate(sorted(data.items())):
     axes[0].plot(df['wl'], df['pwr'],
@@ -164,11 +153,10 @@ for i, (name, df) in enumerate(sorted(data.items())):
                  color=colors[i % len(colors)],
                  linewidth=1.2)
 axes[0].set_ylabel("Power (dBm)")
-axes[0].set_title(f"Full Spectrum - All Traces ({box_tag})")
+axes[0].set_title(f"Full Spectrum - All Traces ({file_tag})")
 axes[0].legend(loc="upper right", fontsize=8)
 axes[0].grid(True, alpha=0.3)
 
-# Panel 2: Source vs Transmitted
 axes[1].plot(src['wl'], src['pwr'],
              label=f"Source - Trace {TRACE_SOURCE}",
              color='C0', linewidth=1.5)
@@ -180,7 +168,6 @@ axes[1].set_title("Source vs Transmitted Power")
 axes[1].legend(loc="upper right", fontsize=9)
 axes[1].grid(True, alpha=0.3)
 
-# Panel 3: Transmission + Insertion Loss
 axes[2].plot(results['wavelength_nm'], results['transmission_dB'],
              color='blue', linewidth=1.5, label="Transmission (dB)")
 axes[2].plot(results['wavelength_nm'], results['insertion_loss_dB'],
@@ -195,7 +182,7 @@ axes[2].set_title(
 axes[2].legend(loc="upper right", fontsize=9)
 axes[2].grid(True, alpha=0.3)
 
-plt.suptitle(f"Transmission Analysis - {box_tag} ({date_tag})",
+plt.suptitle(f"Transmission Analysis - {file_tag}",
              fontsize=13, fontweight='bold', y=1.01)
 plt.tight_layout()
 plt.savefig(SAVE_PLOT, dpi=200, bbox_inches='tight')
@@ -207,7 +194,7 @@ print(f"Saved: {SAVE_PLOT}")
 # SUMMARY
 # ==========================================
 print(f"\n{'='*60}")
-print(f"  TRANSMISSION SUMMARY - {box_tag}")
+print(f"  TRANSMISSION SUMMARY - {file_tag}")
 print(f"{'='*60}")
 print(f"  Source trace:      {TRACE_SOURCE}")
 print(f"  Transmitted trace: {TRACE_TRANSMITTED}")
