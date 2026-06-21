@@ -1,4 +1,4 @@
-# Fiber Bragg Grating Characterization Toolkit
+# Grating Characterization Python Toolkit
 
 This repository contains a set of Python scripts developed during my research internship in the summer of 2026, focused on the spectral characterization of fiber Bragg gratings (FBGs).
 
@@ -33,18 +33,20 @@ All analysis scripts (`reflection_analysis.py` and `transmission_analysis.py`) r
 
 ## Repository Structure
 The structure that follow is the recommended structure to make sure the code works correctly. As I only reach the reflection and transmission.
+
+```
 Grating-research/
 ├── reflection_analysis.py
 ├── transmission_analysis.py
 ├── tmm.py
 ├── data/
-│ ├── reflection/
-│ └── transmission/
+│   ├── reflection/
+│   └── transmission/
 └── results/
-├── reflection/
-├── transmission/
-└── tmm/
-
+    ├── reflection/
+    ├── transmission/
+    └── tmm/
+```
 
 
 All scripts use **relative paths**, so they work on any computer without modification.
